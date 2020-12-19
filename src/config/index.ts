@@ -11,7 +11,7 @@ if (envFound.error) {
 }
 
 export default {
-	/* Security */
+	/* Payload Security */
 	payLoadLimit : process.env.payLoadLimit,
 	
 	/* Cors */
@@ -60,8 +60,7 @@ export default {
 			  return a.trim();
 			}),
 			targetClient : process.env.openIDDownstreamTargetClientID
-		}
-		
+		}		
 	},
 	
 	/* Service port */
@@ -74,7 +73,7 @@ export default {
 		databaseURL: process.env.dbUrl		
 	},
 	
-	/* Used by winston logger*/
+	/* Winston logger*/
 	logs: {
 		level: process.env.logLevel || 'debug',
 		fileLogging: {
@@ -89,17 +88,23 @@ export default {
 	
 	/* API configs */
 	api: {
-	prefix: '/api',
+		prefix: '/api',
 	},
 	
+	
+	/* SIDeR */
 	redirectUrl: process.env.redirectUrl,
 	
 	obfuscation: {
 		encryptionKey: {
-			name: 'k01',
-			value: '0123456789'
+			name: process.env.obfuscationKeyName.trim(),
+			value: process.env.obfuscationKey.trim()
 		},
-		obfuscate: ['birthdate', 'patient'],
-		requiredProperties: ['birthdate', 'location', 'patient', 'practitioner']
+		obfuscate: process.env.obfuscatedParams.trim().split(',').map(a => {
+		  return a.trim();
+		}),
+		requiredProperties: process.env.obfuscatedRequiredParams.trim().split(',').map(a => {
+		  return a.trim();
+		}),
 	}
 };
